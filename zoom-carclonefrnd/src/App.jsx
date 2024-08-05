@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import BookingCar from './pages/Bookingcar'; // Ensure this path is correct
+import BookingCar from './pages/Bookingcar'; 
 import 'antd/dist/reset.css';
 import UserBookings from './pages/UserBooking';
 import AddCar from './pages/AddCar';

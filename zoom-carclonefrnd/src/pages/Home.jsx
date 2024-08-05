@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import PriceRangeSlider from '../components/PriceRangeSlider';
 import moment from 'moment';
-// import '@fortawesome/fontawesome-free/css/all.min.css'; // Import Font Awesome CSS
+import '@fortawesome/fontawesome-free/css/all.min.css'; // Import Font Awesome CSS
 
 const styles = {
   starWrap: {
@@ -16,26 +16,7 @@ const styles = {
   },
   star: {
     color: 'gold',
-    fontSize: '24px',
-  },
-  car: {
-    padding: '16px',
-    border: '1px solid #ddd',
-    marginBottom: '16px',
-  },
-  carImage: {
-    width: '100%',
-  },
-  carContent: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  textLeft: {
-    paddingLeft: '16px',
-  },
-  btn: {
-    marginRight: '8px',
+    fontSize: '20px',
   },
 };
 
@@ -97,22 +78,20 @@ function Home() {
         {Array.isArray(totalCars) && totalCars.map((car) => (
           <Col lg={5} sm={24} xs={24} key={car._id}>
             <div className="car p-2 bs1" style={styles.car}>
-              <div className="star-wrap" style={styles.starWrap}>
+              <img src={car.Imageurl} className="carimg" style={styles.carImage} alt={car.Carname} />
+              <div className="car-content" style={styles.carContent}>
+                <div className="text-left" style={styles.textLeft}>
+                  <p>{car.Carname}</p>
+                  <p>Rent Per Hour {car.RentPerHour} /-</p>
+                  <p>Cars with full  urbanity and well maintained. "For mindfulness and satisfaction"</p>
+                  <div className="star-wrap" style={styles.starWrap}>
                 <i className="fas fa-star" style={styles.star}></i> 
                 <i className="fas fa-star" style={styles.star}></i> 
                 <i className="fas fa-star" style={styles.star}></i>
                 <i className="fas fa-star" style={styles.star}></i>
                 <i className="fas fa-star" style={styles.star}></i> 
               </div>
-              <img src={car.Imageurl} className="carimg" style={styles.carImage} alt={car.Carname} />
-
-              <div className="car-content" style={styles.carContent}>
-                <div className="text-left" style={styles.textLeft}>
-                  <p>{car.Carname}</p>
-                  <p>Rent Per Hour {car.RentPerHour} /-</p>
-                  <p>Cars with full sophistication and well maintained. "For mindfulness and satisfaction"</p>
                 </div>
-
                 <div>
                   <button className="btn1" style={styles.btn}>
                     <Link to={`/booking/${car._id}`}>Book Now</Link>
