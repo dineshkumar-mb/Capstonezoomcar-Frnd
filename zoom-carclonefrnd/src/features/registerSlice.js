@@ -7,7 +7,7 @@ export const userLogin = createAsyncThunk(
   'user/login',
   async (reqObj, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/users/login', reqObj);
+      const response = await axios.post('https://capstonezoomcar-bknd.onrender.com/api/users/login', reqObj);
       localStorage.setItem('user', JSON.stringify(response.data));
       message.success('Login success');
       setTimeout(() => {
@@ -27,7 +27,7 @@ export const userRegister = createAsyncThunk(
   async (reqObj, { rejectWithValue }) => {
     try {
      
-      const response = await axios.post('http://localhost:3001/api/users/register', reqObj);
+      const response = await axios.post('https://capstonezoomcar-bknd.onrender.com/api/users/register', reqObj);
       message.success('Registration successful');
       setTimeout(() => {
         window.location.href = '/login';

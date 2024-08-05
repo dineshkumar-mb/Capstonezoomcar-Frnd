@@ -7,7 +7,7 @@ export const getAllCars = createAsyncThunk(
   async (_, { dispatch }) => {
     dispatch(setLoading(true));
     try {
-      const response = await axios.get('http://localhost:3001/api/cars/getallcars');
+      const response = await axios.get('https://capstonezoomcar-bknd.onrender.com/api/cars/getallcars');
       return response.data;
     } catch (error) {
       console.log(error);
@@ -22,7 +22,7 @@ export const addCar = createAsyncThunk(
   async (reqObj, { dispatch }) => {
     dispatch(setLoading(true));
     try {
-      await axios.post('http://localhost:3001/api/cars/addcar', reqObj);
+      await axios.post('https://capstonezoomcar-bknd.onrender.com/api/cars/addcar', reqObj);
       message.success('New car added successfully');
       setTimeout(() => {
         window.location.href = '/admin';
@@ -41,7 +41,7 @@ export const deleteCar = createAsyncThunk(
   async (carId, { dispatch }) => {
     dispatch(setLoading(true));
     try {
-      await axios.delete(`http://localhost:3001/api/cars/deletecar/${carId}`);
+      await axios.delete(`https://capstonezoomcar-bknd.onrender.com/api/cars/deletecar/${carId}`);
       message.success('Car deleted successfully');
       dispatch(getAllCars()); // Refresh the car list
     } catch (error) {
@@ -57,7 +57,7 @@ export const editCar = createAsyncThunk(
   async (reqObj, { dispatch }) => {
     dispatch(setLoading(true));
     try {
-      await axios.put(`http://localhost:3001/api/cars/editcar/${reqObj._id}`, reqObj);
+      await axios.put(`https://capstonezoomcar-bknd.onrender.com/api/cars/editcar/${reqObj._id}`, reqObj);
       message.success('Car details updated successfully');
       dispatch(getAllCars()); // Refresh the car list
     } catch (error) {
@@ -71,7 +71,7 @@ export const editCar = createAsyncThunk(
 export const fetchFilteredCars = createAsyncThunk(
   'cars/fetchFilteredCars',
   async ({ category, minBudget, maxBudget }) => {
-    const response = await axios.get('http://localhost:3001/api/cars/search', {
+    const response = await axios.get('https://capstonezoomcar-bknd.onrender.com/api/cars/search', {
       params: { category, minBudget, maxBudget }
     });
     return response.data;

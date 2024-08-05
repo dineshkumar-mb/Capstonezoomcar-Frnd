@@ -4,25 +4,25 @@ import axios from 'axios';
 import { message } from 'antd';
 // Async thunk for fetching all bookings
 export const getAllBookings = createAsyncThunk('bookings/getAllBookings', async () => {
-  const response = await axios.get('http://localhost:3001/api/bookings/getallbookings');
+  const response = await axios.get('https://capstonezoomcar-bknd.onrender.com/api/bookings/getallbookings');
   return response.data;
 });
 
 // Async thunk for booking a car
 export const bookCar = createAsyncThunk('bookings/bookCar', async (bookingData) => {
-  const response = await axios.post('http://localhost:3001/api/bookings/bookings/bookingcar', bookingData);
+  const response = await axios.post('https://capstonezoomcar-bknd.onrender.com/api/bookings/bookings/bookingcar', bookingData);
   return response.data;
 });
 
 // Async thunk for editing a booking
 export const updateBooking = createAsyncThunk('bookings/updateBooking', async ({ id, bookingData }) => {
-  const response = await axios.put(`http://localhost:3001/api/bookings/bookings/${id}`, bookingData);
+  const response = await axios.put(`https://capstonezoomcar-bknd.onrender.com/api/bookings/bookings/${id}`, bookingData);
   return response.data;
 });
 
 // Async thunk for deleting a booking
 export const deleteBooking = createAsyncThunk('bookings/deleteBooking', async (id) => {
-  await axios.delete(`http://localhost:3001/api/bookings/delete/${id}`);
+  await axios.delete(`https://capstonezoomcar-bknd.onrender.com/api/bookings/delete/${id}`);
   return id;
 });
 
@@ -30,7 +30,7 @@ export const deleteBooking = createAsyncThunk('bookings/deleteBooking', async (i
 export const getAllCars = createAsyncThunk('cars/getAllCars', async (_, { dispatch }) => {
   dispatch(setLoading(true));
   try {
-    const response = await axios.get('http://localhost:3001/api/bookings/userbookings');
+    const response = await axios.get('https://capstonezoomcar-bknd.onrender.com/api/bookings/userbookings');
     return response.data;
   } catch (error) {
     console.log(error);
@@ -100,26 +100,26 @@ export default bookingsSlice.reducer;
 
 // // Async thunk for fetching all bookings
 // export const getAllBookings = createAsyncThunk('bookings/getAllBookings', async () => {
-//   const response = await axios.get('http://localhost:3001/api/bookings/getallbookings');
+//   const response = await axios.get('https://capstonezoomcar-bknd.onrender.com/api/bookings/getallbookings');
 //   return response.data;
 // });
 
 // // Async thunk for booking a car
 // export const bookCar = createAsyncThunk('bookings/bookingCar', async (bookingData) => {
-//   const response = await axios.post('http://localhost:3001/api/bookings/bookings/bookingcar', bookingData);
+//   const response = await axios.post('https://capstonezoomcar-bknd.onrender.com/api/bookings/bookings/bookingcar', bookingData);
 //   console.log(bookingData)
 //   return response.data;
 // });
 
 // // Async thunk for editing a car
 // export const editbookCar = createAsyncThunk('bookings/editBooking', async ({ id, bookingData }) => {
-//   const response = await axios.put(`http://localhost:3001/api/bookings/bookings/${id}`, bookingData);
+//   const response = await axios.put(`https://capstonezoomcar-bknd.onrender.com/api/bookings/bookings/${id}`, bookingData);
 
 //   return response.data;
 // });
 // // delete booking
 // export const deleteBooking = createAsyncThunk('bookings/deleteBooking', async ({ id, bookingData }) => {
-//   const response = await axios.delete(`http://localhost:3001/api/bookings/deleteBooking/${id}`,bookingData);
+//   const response = await axios.delete(`https://capstonezoomcar-bknd.onrender.com/api/bookings/deleteBooking/${id}`,bookingData);
 //   return response.data;
 // });
 
@@ -129,7 +129,7 @@ export default bookingsSlice.reducer;
 //   async (_, { dispatch }) => {
 //     dispatch(setLoading(true));
 //     try {
-//       const response = await axios.get('http://localhost:3001/api/bookings/bookings/userbookings');
+//       const response = await axios.get('https://capstonezoomcar-bknd.onrender.com/api/bookings/bookings/userbookings');
 //       return response.data;
 //     } catch (error) {
 //       console.log(error);

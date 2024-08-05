@@ -26,7 +26,7 @@ const CheckoutForm = () => {
       setError(error.message);
     } else {
       try {
-        const response = await axios.post('http://localhost:3001/api/bookings/payment', {
+        const response = await axios.post('https://capstonezoomcar-bknd.onrender.com/api/bookings/payment', {
           token: paymentMethod.id,
           amount: 5000, // Amount in cents
         });
