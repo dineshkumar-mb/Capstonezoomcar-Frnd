@@ -16,6 +16,24 @@ function UserBookings() {
     dispatch(getAllBookings());
   }, [dispatch]);
 
+  if (!Array.isArray(bookings)) {
+    return <div>Error: Bookings data is not an array</div>;
+  }
+
+  
+  const handleUpdate = (id) => {
+    const updatedBooking = {
+      car: { Carname: 'Updated Car', RentPerHour: 150 },
+      totalHours: 6,
+      totalAmount: 900,
+    };
+    dispatch(editbookCar({ id, booking: updatedBooking }));
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deleteBooking(id));
+  };
+
   return (
     <DefaultLayout>
       {loading && <Spinner />}
