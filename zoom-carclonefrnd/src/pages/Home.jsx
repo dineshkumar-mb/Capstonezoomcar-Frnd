@@ -1,13 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import DefaultLayout from '../components/Defaultlayout';
-import { getAllCars } from '../features/carsSlice'; // Adjust the import path as needed
-import { Col, Row, DatePicker } from 'antd';
+import DefaultLayout from '../components/Defaultlayout'; 
+import { getAllCars } from '../features/carsSlice'; 
+import { Col, Row } from 'antd';
 import { Link } from 'react-router-dom';
 import Spinner from '../components/Spinner';
+import PriceRangeSlider from '../components/PriceRangeSlider';
 import moment from 'moment';
+// import '@fortawesome/fontawesome-free/css/all.min.css'; // Import Font Awesome CSS
 
-const { RangePicker } = DatePicker;
+const styles = {
+  starWrap: {
+    display: 'flex',
+    flexDirection: 'row-reverse',
+  },
+  star: {
+    color: 'gold',
+    fontSize: '24px',
+  },
+  car: {
+    padding: '16px',
+    border: '1px solid #ddd',
+    marginBottom: '16px',
+  },
+  carImage: {
+    width: '100%',
+  },
+  carContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  textLeft: {
+    paddingLeft: '16px',
+  },
+  btn: {
+    marginRight: '8px',
+  },
+};
 
 function Home() {
   const { cars, loading } = useSelector((state) => state.cars);
@@ -32,6 +62,7 @@ function Home() {
       if (car.bookedTimeSlots.length === 0) {
         temp.push(car);
       } else {
+        let isAvailable = true;
         for (const booking of car.bookedTimeSlots) {
           if (
             selectedFrom.isBetween(booking.from, booking.to) ||
@@ -39,10 +70,12 @@ function Home() {
             moment(booking.from).isBetween(selectedFrom, selectedTo) ||
             moment(booking.to).isBetween(selectedFrom, selectedTo)
           ) {
-            // Do nothing
-          } else {
-            temp.push(car);
+            isAvailable = false;
+            break;
           }
+        }
+        if (isAvailable) {
+          temp.push(car);
         }
       }
     }
@@ -50,37 +83,38 @@ function Home() {
     setTotalCars(temp);
   }
 
-  console.log('totalCars:', totalCars); // Add this line to check the type of totalCars
+  const handleFilter = (filteredCars) => {
+    setTotalCars(filteredCars);
+  };
 
   return (
     <DefaultLayout>
-      {/* <Row className="mt-3" justify="center">
-        <Col lg={20} sm={24} className="d-flex justify-content-left">
-          <RangePicker
-            showTime={{ format: 'HH:mm' }}
-            format="MMM DD yyyy HH:mm"
-            onChange={setFilter}
-          />
-        </Col>
-      </Row> */}
+      <PriceRangeSlider data={cars} onFilter={handleFilter} />
 
       {loading && <Spinner />}
 
       <Row justify="center" gutter={16}>
-        {Array.isArray(totalCars) && totalCars.map((car) => ( // Ensure totalCars is an array
+        {Array.isArray(totalCars) && totalCars.map((car) => (
           <Col lg={5} sm={24} xs={24} key={car._id}>
-            <div className="car p-2 bs1">
-              <img src={car.Imageurl} className="carimg" alt={car.Carname} />
+            <div className="car p-2 bs1" style={styles.car}>
+              <div className="star-wrap" style={styles.starWrap}>
+                <i className="fas fa-star" style={styles.star}></i> 
+                <i className="fas fa-star" style={styles.star}></i> 
+                <i className="fas fa-star" style={styles.star}></i>
+                <i className="fas fa-star" style={styles.star}></i>
+                <i className="fas fa-star" style={styles.star}></i> 
+              </div>
+              <img src={car.Imageurl} className="carimg" style={styles.carImage} alt={car.Carname} />
 
-              <div className="car-content d-flex align-items-center justify-content-between">
-                <div className="text-left pl-2">
+              <div className="car-content" style={styles.carContent}>
+                <div className="text-left" style={styles.textLeft}>
                   <p>{car.Carname}</p>
-                  <p> Rent Per Hour {car.RentPerHour} /-</p>
-                  <p>cars with full sofasticated and well maintained. "To enjoy your Trip with mindfullness and satisfaction"</p>
+                  <p>Rent Per Hour {car.RentPerHour} /-</p>
+                  <p>Cars with full sophistication and well maintained. "For mindfulness and satisfaction"</p>
                 </div>
 
                 <div>
-                  <button className="btn1 mr-2">
+                  <button className="btn1" style={styles.btn}>
                     <Link to={`/booking/${car._id}`}>Book Now</Link>
                   </button>
                 </div>
@@ -94,3 +128,109 @@ function Home() {
 }
 
 export default Home;
+
+
+// import React, { useState, useEffect } from 'react';
+// import { useSelector, useDispatch } from 'react-redux';
+// import DefaultLayout from '../components/Defaultlayout';
+// import { getAllCars } from '../features/carsSlice'; // Adjust the import path as needed
+// import { Col, Row } from 'antd';
+// import { Link } from 'react-router-dom';
+// import Spinner from '../components/Spinner';
+// import PriceRangeSlider from '../components/PriceRangeSlider';
+// import moment from 'moment';
+// <style>
+// .star-wrap {
+//   display: flex;
+//   flex-direction: reverse; 
+  
+// }
+// </style>
+// function Home() {
+//   const { cars, loading } = useSelector((state) => state.cars);
+//   const [totalCars, setTotalCars] = useState([]);
+//   const dispatch = useDispatch();
+
+//   useEffect(() => {
+//     dispatch(getAllCars());
+//   }, [dispatch]);
+
+//   useEffect(() => {
+//     setTotalCars(cars);
+//   }, [cars]);
+
+//   function setFilter(values) {
+//     const selectedFrom = moment(values[0], 'MMM DD yyyy HH:mm');
+//     const selectedTo = moment(values[1], 'MMM DD yyyy HH:mm');
+
+//     const temp = [];
+
+//     for (const car of cars) {
+//       if (car.bookedTimeSlots.length === 0) {
+//         temp.push(car);
+//       } else {
+//         for (const booking of car.bookedTimeSlots) {
+//           if (
+//             selectedFrom.isBetween(booking.from, booking.to) ||
+//             selectedTo.isBetween(booking.from, booking.to) ||
+//             moment(booking.from).isBetween(selectedFrom, selectedTo) ||
+//             moment(booking.to).isBetween(selectedFrom, selectedTo)
+//           ) {
+//             // Do nothing
+//           } else {
+//             temp.push(car);
+//           }
+//         }
+//       }
+//     }
+
+//     setTotalCars(temp);
+//   }
+
+//   const handleFilter = (filteredCars) => {
+//     setTotalCars(filteredCars);
+//   };
+
+//   return (
+//     <DefaultLayout>
+//       <PriceRangeSlider data={cars} onFilter={handleFilter} />
+
+//       {loading && <Spinner />}
+
+//       <Row justify="center" gutter={16}>
+//         {Array.isArray(totalCars) && totalCars.map((car) => ( // Ensure totalCars is an array
+//           <Col lg={5} sm={24} xs={24} key={car._id}>
+//             <div className="car p-2 bs1">
+//             <div className="star-wrap">
+//               <i className="fas fa-star" style="color: gold; font-size: 24px;"></i> 
+//               <i className="fas fa-star" style="color: gold; font-size: 24px;"> </i> 
+//                 <i className="fas fa-star" style="color: gold; font-size: 24px;"></i>
+//                 <i className="fas fa-star" style="color: gold; font-size: 24px;"></i>
+//                 <i className="fas fa-star" style="color: gold; font-size: 24px;"></i> 
+             
+//             </div>
+//               <img src={car.Imageurl} className="carimg" alt={car.Carname} />
+
+//               <div className="car-content d-flex align-items-center justify-content-between">
+//                 <div className="text-left pl-2">
+//                   <p>{car.Carname}</p>
+//                   <p> Rent Per Hour {car.RentPerHour} /-</p>
+//                   <p>cars with full sofasticated and well maintained. "For mindfullness and satisfaction"</p>
+//                 </div>
+
+//                 <div>
+//                   <button className="btn1 mr-2">
+//                     <Link to={`/booking/${car._id}`}>Book Now</Link>
+//                   </button>
+//                 </div>
+//               </div>
+//             </div>
+//           </Col>
+//         ))}
+//       </Row>
+//     </DefaultLayout>
+//   );
+// }
+
+// export default Home;
+

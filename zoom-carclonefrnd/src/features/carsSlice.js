@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { message } from 'antd';
-
 // Define your async thunks
 export const getAllCars = createAsyncThunk(
   'cars/getAllCars',
@@ -18,7 +17,6 @@ export const getAllCars = createAsyncThunk(
     }
   }
 );
-
 export const addCar = createAsyncThunk(
   'cars/addCar',
   async (reqObj, { dispatch }) => {
@@ -26,9 +24,9 @@ export const addCar = createAsyncThunk(
     try {
       await axios.post('http://localhost:3001/api/cars/addcar', reqObj);
       message.success('New car added successfully');
-      // setTimeout(() => {
-      //   window.location.href = '/admin';
-      // }, 500);
+      setTimeout(() => {
+        window.location.href = '/admin';
+      }, 500);
     } catch (error) {
       console.log(error);
       message.error('Something went wrong, please try later');
@@ -54,7 +52,6 @@ export const deleteCar = createAsyncThunk(
     }
   }
 );
-
 export const editCar = createAsyncThunk(
   'cars/editCar',
   async (reqObj, { dispatch }) => {
@@ -71,7 +68,15 @@ export const editCar = createAsyncThunk(
     }
   }
 );
-
+export const fetchFilteredCars = createAsyncThunk(
+  'cars/fetchFilteredCars',
+  async ({ category, minBudget, maxBudget }) => {
+    const response = await axios.get('http://localhost:3001/api/cars/search', {
+      params: { category, minBudget, maxBudget }
+    });
+    return response.data;
+  }
+);
 // Define your slice
 const carsSlice = createSlice({
   name: 'cars',
@@ -90,43 +95,45 @@ const carsSlice = createSlice({
         state.loading = true;
       })
       .addCase(getAllCars.fulfilled, (state, action) => {
-        state.loading = false;
         state.cars = action.payload;
       })
       .addCase(getAllCars.rejected, (state) => {
-        state.loading = false;
+        // No need to set loading to false here
       })
       .addCase(addCar.pending, (state) => {
         state.loading = true;
       })
       .addCase(addCar.fulfilled, (state, action) => {
-        state.loading = false;
         state.cars.push(action.payload);
+        // No need to set loading to false here
       })
       .addCase(addCar.rejected, (state) => {
-        state.loading = false;
+        // No need to set loading to false here
       })
       .addCase(deleteCar.pending, (state) => {
         state.loading = true;
       })
       .addCase(deleteCar.fulfilled, (state) => {
-        state.loading = false;
       })
       .addCase(deleteCar.rejected, (state) => {
-        state.loading = false;
       })
       .addCase(editCar.pending, (state) => {
         state.loading = true;
       })
-      .addCase(editCar.fulfilled, (state) => {
-        state.loading = false;
+      .addCase(editCar.fulfilled, (state) => {   
       })
       .addCase(editCar.rejected, (state) => {
-        state.loading = false;
+      })
+      .addCase(fetchFilteredCars.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchFilteredCars.fulfilled, (state, action) => {
+        state.cars = action.payload;
+      })
+      .addCase(fetchFilteredCars.rejected, (state, action) => {
+        state.error = action.error.message;
       });
   },
 });
-
-// Export the actions and reducer
 export const { setLoading } = carsSlice.actions;
 export default carsSlice.reducer;

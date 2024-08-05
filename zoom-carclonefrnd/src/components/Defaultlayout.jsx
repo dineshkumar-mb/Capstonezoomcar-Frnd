@@ -1,73 +1,62 @@
+
+
 import React from "react";
-import { Menu, Dropdown, Button, Space , Row , Col } from "antd";
-import {Link} from 'react-router-dom'
+import { Menu, Dropdown, Button, Row, Col } from "antd";
+import { Link } from 'react-router-dom';
 
 function DefaultLayout(props) {
-    const user = JSON.parse(localStorage.getItem('user'))
+  const user = JSON.parse(localStorage.getItem('user'));
+console.log("user",user)
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    window.location.href = '/login';
+  };
+
   const menu = (
     <Menu>
-        <Menu.Item>
-        <a
-         
-          href="/"
-        >
-          Home
-        </a>
+      <Menu.Item>
+        <Link to="/">Home</Link>
       </Menu.Item>
       <Menu.Item>
-        <a
-          
-          href="/userbookings"
-        >
-          Bookings
-        </a>
+        <Link to="/userbookings">Bookings</Link>
       </Menu.Item>
+     
       <Menu.Item>
-        <a
-         
-          href="/admin"
-        >
-          Admin
-        </a>
+        <Link to="/admin">Admin</Link>
       </Menu.Item>
-      <Menu.Item onClick={()=>{
-          localStorage.removeItem('user');
-          window.location.href='/login'
-      }}>
-          <li style={{color:'orangered'}}>Logout</li>
+      <Menu.Item onClick={handleLogout}>
+        <span style={{ color: 'orangered' }}>Logout</span>
       </Menu.Item>
     </Menu>
   );
+
   return (
     <div>
       <div className="header bs1">
-          <Row gutter={16} justify='center'>
-              <Col lg={20} sm={24} xs={24}>
-              <div className="d-flex justify-content-between">
-             <h1 ><b><Link to='/' style={{color:'orangered'}}>ZoomCar</Link></b></h1>
-
-          <Dropdown overlay={menu} placement="bottomCenter">
-            <Button>{user.username}</Button>
-          </Dropdown>
-        </div>
-              </Col>
-          </Row>
-        
+        <Row gutter={16} justify="center">
+          <Col lg={20} sm={24} xs={24}>
+            <div className="d-flex justify-content-between">
+              <h1>
+                <b>
+                  <Link to="/" style={{ color: 'orangered' }}>ZoomCar</Link>
+                </b>
+              </h1>
+              <Dropdown overlay={menu} placement="bottom">
+                <Button>{user.username}</Button>
+              </Dropdown>
+            </div>
+          </Col>
+        </Row>
       </div>
       <div className="content">{props.children}</div>
-
       <div className="footer text-center">
-      <hr />
-
-           <p>Desinged and Developed By</p>
-
-           
-
-           <p>Dinesh</p>
-          
+        <hr />
+        <p>Designed and Developed By</p>
+        <p>Dinesh</p>
       </div>
     </div>
   );
 }
 
 export default DefaultLayout;
+
