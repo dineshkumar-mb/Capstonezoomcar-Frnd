@@ -23,66 +23,7 @@ const styles = {
     fontSize: '20px',
     cursor: 'pointer',
   },
-  car: {
-    padding: '20px',
-    border: '1px solid #ccc',
-    borderRadius: '10px',
-    marginBottom: '20px',
-    transition: '0.3s',
-    position: 'relative',
-    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)',
-    backgroundColor: '#fff',
-    overflow: 'hidden',
-  },
-  carHover: {
-    boxShadow: '0 8px 16px 0 rgba(0, 0, 0, 0.2)',
-    transform: 'scale(1.05)',
-  },
-  carImage: {
-    width: '100%',
-    height: '150px',
-    objectFit: 'cover',
-    borderRadius: '10px 10px 0 0',
-  },
-  carContent: {
-    padding: '10px',
-  },
-  textLeft: {
-    textAlign: 'left',
-  },
-  btnContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginTop: '10px',
-  },
-  btn: {
-    backgroundColor: '#1890ff',
-    color: '#fff',
-    border: 'none',
-    padding: '10px 20px',
-    cursor: 'pointer',
-    textDecoration: 'none',
-    display: 'inline-block',
-    borderRadius: '5px',
-    marginBottom: '10px', // Space between buttons
-  },
-  modalButton: {
-    padding: '10px 20px',
-    backgroundColor: '#1890ff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  textarea: {
-    width: '100%',
-    height: '80px',
-    padding: '10px',
-    marginBottom: '10px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-  },
+  
 };
 
 function Home() {
@@ -162,8 +103,8 @@ function Home() {
 
   const handleReviewSubmit = (carId) => {
     const user = JSON.parse(localStorage.getItem('user')).username;
-    axios.post(`http://localhost:3001/api/cars/rate/${carId}`, { rating: ratings[carId], review: reviewText, user })
-      .then(response => {
+    axios.post(`https://capstonezoomcar-bknd.onrender.com/api/cars/rate/${carId}`, { rating: ratings[carId], review: reviewText, user })
+    .then(response => {
         console.log('Rating and review updated', response);
         setReviewText(''); // clear the review text
         setSelectedCar(null); // deselect car after review

@@ -1,19 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
-.header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.zoomcar-logo {
-  color: orangered;
-  text-decoration: none;
-}
-
-.zoomcar-logo:hover {
-  color: orangered;
-}
-
 body {
   margin: 0;
   font-family: 'Montserrat', sans-serif !important;
@@ -161,4 +146,16 @@ svg{
 }
 a{
   color: orangered !important;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
