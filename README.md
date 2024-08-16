@@ -62,6 +62,7 @@ Secure payment processing is available for rental transactions within the app ( 
 ![Screenshot 2024-08-16 165115](https://github.com/user-attachments/assets/12688a97-7d95-4522-9363-e67b691330df)
 ![Screenshot 2024-08-16 165221](https://github.com/user-attachments/assets/163cfb9c-1697-4ee8-aee7-b7a5121d7e3b)
 if payment done by user is successfull its redirect to user bookings page there user can edit booking or cancel bookings
+#edit booking/update bookings
 ![Screenshot 2024-08-16 165314](https://github.com/user-attachments/assets/5d6d19ff-c6f4-491f-8751-c9bfee8282cb)
 
 
