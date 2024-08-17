@@ -3,24 +3,48 @@ import axios from 'axios';
 import { message } from 'antd';
 
 // Async thunk for user login
+// export const userLogin = createAsyncThunk(
+//   'user/login',
+//   async (reqObj, { rejectWithValue }) => {
+//     try {
+      
+//       const response = await axios.post('http://localhost:3001/api/users/login', reqObj);
+//       console.log("response",response)
+//       localStorage.setItem('user', JSON.stringify(response.data.user));
+//       message.success('Login success !');
+//       setTimeout(() => {
+//         window.location.href = '/';
+//       }, 500);
+//       console.log(response.data)
+//       return response.data;
+//     } catch (error) {
+//       message.error('Something went wrong');
+//       return rejectWithValue(error.response.data);
+//     }
+//   }
+// );
 export const userLogin = createAsyncThunk(
-  'user/login',
+  'auth/login', // Action type
   async (reqObj, { rejectWithValue }) => {
     try {
+      // Send POST request to the login API
       const response = await axios.post('https://capstonezoomcar-bknd.onrender.com/api/users/login', reqObj);
-      localStorage.setItem('user', JSON.stringify(response.data));
-      message.success('Login success');
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 500);
-      return response.data;
+      
+      // Store user data in local storage
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+
+      // Show success message
+      message.success('Login success!');
+
+      // Return the user data (which includes the role)
+      return response.data; // Assuming this contains { token, user: { username, role } }
     } catch (error) {
+      // Show error message
       message.error('Something went wrong');
       return rejectWithValue(error.response.data);
     }
   }
 );
-
 // Async thunk for user registration
 export const userRegister = createAsyncThunk(
   'user/register',
@@ -47,6 +71,7 @@ const userSlice = createSlice({
     user: null,
     loading: false,
     error: null,
+    isAdmin: false, // New field to track if the user is an admin
   },
   reducers: {},
   extraReducers: (builder) => {

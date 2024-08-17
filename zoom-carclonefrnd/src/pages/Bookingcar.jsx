@@ -1,47 +1,29 @@
-
-
-import { Col, Row, Divider, DatePicker, Checkbox, Modal } from "antd";
+import { Col, Row, Divider, DatePicker, Checkbox } from "antd";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import DefaultLayout from "../components/Defaultlayout";
 import Spinner from "../components/Spinner";
-import { getAllCars } from "../features/carsSlice";
+import { getAllCars, bookCar } from "../features/carsSlice"; 
 import moment from "moment";
-import { bookCar } from "../features/bookingSlice";
 import StripeCheckout from "react-stripe-checkout";
-import 'aos/dist/aos.css'; // You can also use <link> for styles
+import 'aos/dist/aos.css'; 
+import '../index.css'; // Import your custom styles
+
 const { RangePicker } = DatePicker;
 
 function BookingCar() {
+  const navigate = useNavigate();
   const { carid } = useParams();
-  const { cars } = useSelector((state) => state.cars);
-  const { loading } = useSelector((state) => state.alerts);
-  const [car, setCar] = useState({});
-  const { bookings, error } = useSelector((state) => state.bookings);
-
+  const { cars, loading } = useSelector((state) => state.cars);
   const dispatch = useDispatch();
+  const [car, setCar] = useState({});
   const [from, setFrom] = useState();
   const [to, setTo] = useState();
   const [totalHours, setTotalHours] = useState(0);
   const [driver, setDriver] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState(null);
-  const bookSelectedSlot = () => {
-    if (selectedSlot) {
-      // Call your booking function here (e.g., handleBookCar)
-      handleBookCar({
-        // Include relevant data (e.g., selectedSlot, car ID, user info)
-        // ...
-      });
-      // Close the modal after booking
-      setShowModal(false);
-    } else {
-      // Show an error message (e.g., "Please select a time slot")
-      console.error('Please select a time slot.');
-    }
-  };
+
   useEffect(() => {
     if (cars.length === 0) {
       dispatch(getAllCars());
@@ -53,7 +35,7 @@ function BookingCar() {
   useEffect(() => {
     setTotalAmount(totalHours * car.RentPerHour);
     if (driver) {
-      setTotalAmount(totalAmount + 30 * totalHours);
+      setTotalAmount(prevAmount => prevAmount + 30 * totalHours);
     }
   }, [driver, totalHours, car.RentPerHour]);
 
@@ -64,7 +46,6 @@ function BookingCar() {
   }
 
   function onToken(token) {
-    console.log("token",token)
     const reqObj = {
       token,
       user: JSON.parse(localStorage.getItem("user"))._id,
@@ -74,15 +55,31 @@ function BookingCar() {
       driverRequired: driver,
       bookedTimeSlots: { from, to },
     };
-    dispatch(bookCar(reqObj));
+
+    dispatch(bookCar(reqObj))
+      .then((response) => {
+        if (response.meta.requestStatus === 'fulfilled') {
+          navigate("/userbookings");
+        }
+      })
+      .catch((error) => {
+        console.error('Error during booking:', error);
+      });
   }
 
   return (
     <DefaultLayout>
       {loading && <Spinner />}
-      <Row justify="center" className="d-flex align-items-center" style={{ minHeight: "90vh" }}>
+      <Row justify="center" align="middle" style={{ minHeight: "90vh", padding: '0 16px' }}>
         <Col lg={10} sm={24} xs={24} className='p-3'>
-          <img src={car.Imageurl} className="carimg2 bs1 w-100" data-aos='flip-left' data-aos-duration='1500' />
+          <img 
+            src={car.Imageurl} 
+            className="carimg2 bs1 w-100" 
+            style={{ width: '100%', height: 'auto' }} 
+            data-aos='flip-left' 
+            data-aos-duration='1500' 
+            alt={car.Carname}
+          />
         </Col>
         <Col lg={10} sm={24} xs={24} className="text-right">
           <Divider type="horizontal" dashed>Car Info</Divider>
@@ -93,34 +90,30 @@ function BookingCar() {
             <p>Max Persons : {car.Capacity}</p>
           </div>
           <Divider type="horizontal" dashed>Select Time Slots</Divider>
-          <RangePicker showTime={{ format: "HH:mm" }} format="MMM DD YYYY HH:mm" onChange={selectTimeSlots} />
+          <RangePicker showTime={{ format: "HH:mm" }} format="MMM DD YYYY HH:mm" onChange={selectTimeSlots} style={{ width: '100%' }} />
           <br />
-          {/* <button className="btn1 mt-2" onClick={() => { setShowModal(true); }}>See Booked Slots</button> */}
           {from && to && (
             <div>
               <p>Total Hours : <b>{totalHours}</b></p>
               <p>Rent Per Hour : <b>{car.RentPerHour}</b></p>
-              <Checkbox onChange={(e) => { setDriver(e.target.checked); }}>Driver Required</Checkbox>
+              <Checkbox onChange={(e) => setDriver(e.target.checked)}>Driver Required</Checkbox>
               <h3>Total Amount : {totalAmount}</h3>
               <StripeCheckout
-  shippingAddress
-  token={onToken}
-  currency="INR" // Use "INR" for Indian Rupees
-  amount={totalAmount * 100}
-  stripeKey="pk_test_51PfEQKIGMXT0myEMc0tW6LWBF03XGIQRKqP2cQeAdCq9sa3W4lDKcM9tGTJsYnzUa1tLIdMzQCc4NE4fP0v9XYPl00ZI4k9wkt"
->
-  <button className="btn1">BookNow</button>
-</StripeCheckout>
-
+                shippingAddress
+                token={onToken}
+                currency="INR"
+                amount={totalAmount * 100}
+                stripeKey="pk_test_51PfEQKIGMXT0myEMc0tW6LWBF03XGIQRKqP2cQeAdCq9sa3W4lDKcM9tGTJsYnzUa1tLIdMzQCc4NE4fP0v9XYPl00ZI4k9wkt"
+              >
+                <button className="btn1">Book Now</button>
+              </StripeCheckout>
             </div>
           )}
-        </Col> 
+        </Col>
       </Row>
     </DefaultLayout>
   );
 }
-  
-
 
 export default BookingCar;
 

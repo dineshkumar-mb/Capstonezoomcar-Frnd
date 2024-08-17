@@ -68,6 +68,7 @@ button{
 .footer{
   background-color: aliceblue;
   padding: 10px;
+  justify-content: center;
 }
 
 
@@ -157,5 +158,18 @@ a{
 .header-content {
   display: flex;
   justify-content: space-between;
+  width: 100%;
+}
+@media (max-width: 768px) {
+  .carimg2 {
+    height: auto; /* Ensure the height is auto on smaller screens */
+  }
+
+  .text-right {
+    text-align: left; /* Align text to the left for smaller screens */
+  }
+}
+/* Ensure the picker input is 100% width */
+.ant-picker {
   width: 100%;
 }
