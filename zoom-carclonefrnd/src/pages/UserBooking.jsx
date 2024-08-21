@@ -40,7 +40,7 @@ function UserBookings() {
       ...selectedBooking,
       totalHours: values.totalHours,
       bookedTimeSlots: {
-        from: values.from.format("MMM DD YYYY HH:mm"),
+        from: values.from.format("MMM DD YYYY HH:mm "),
         to: values.to.format("MMM DD YYYY HH:mm"),
       },
       totalAmount: totalAmount,
@@ -70,8 +70,8 @@ function UserBookings() {
               </Col>
               <Col lg={12} sm={24}>
                 <p>Transaction Id: <b>{booking.transactionId}</b></p>
-                <p>From: <b>{booking.bookedTimeSlots.from}</b></p>
-                <p>To: <b>{booking.bookedTimeSlots.to}</b></p>
+                {/* <p>From: <b>{booking.bookedTimeSlots.from}</b></p>
+                <p>To: <b>{booking.bookedTimeSlots.to}</b></p> */}
                 <p>Date of booking: <b>{moment(booking.createdAt).format('MMM DD YYYY HH:mm')}</b></p>
                 <p>Driver Required: <b>{booking.driverRequired ? "Yes" : "No"}</b></p>
               </Col>
@@ -81,7 +81,7 @@ function UserBookings() {
                     style={{ borderRadius: 5 }} 
                     src={booking.car.Imageurl} 
                     height="100"
-                    width="100" 
+                    width="80" 
                     className="p-2" 
                     alt={booking.car.Carname} 
                   />
@@ -101,9 +101,9 @@ function UserBookings() {
         footer={null}
       >
         <Form form={form} layout="vertical" onFinish={handleUpdate}>
-          <Form.Item name="totalHours" label="Total Hours">
+          {/* <Form.Item name="totalHours" label="Total Hours">
             <InputNumber min={1} />
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item name="from" label="From">
             <DatePicker showTime format="MMM DD YYYY HH:mm" />
           </Form.Item>
