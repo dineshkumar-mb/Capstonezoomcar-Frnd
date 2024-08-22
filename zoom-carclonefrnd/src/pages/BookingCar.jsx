@@ -67,11 +67,12 @@ function BookingCar() {
       });
   }
   function selectTimeSlots(values) {
-    const fromTime = moment(values[0]);
-    const toTime = moment(values[1]);
+    const fromTime = moment(values[0]).startOf('minute');
+    const toTime = moment(values[1]).startOf('minute');
+    const currentTime = moment().startOf('minute');
   
     // Check if the selected time is in the past
-    if (fromTime.isBefore(moment()) || toTime.isBefore(moment())) {
+    if (fromTime.isBefore(currentTime) || toTime.isBefore(currentTime)) {
       alert("You cannot book a car in the past. Please select a valid time range.");
       setFrom(null);
       setTo(null);
@@ -83,6 +84,7 @@ function BookingCar() {
     setTo(toTime.format("MMM DD YYYY HH:mm"));
     setTotalHours(toTime.diff(fromTime, "hours"));
   }
+  
   
   return (
     <DefaultLayout>
