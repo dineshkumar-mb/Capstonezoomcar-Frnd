@@ -47,6 +47,7 @@ Users can search & filter based on their preferences by categories, budget.
 
 Users can choose from various vehicles for rent based on their preferences.
 ![Screenshot 2024-08-16 164412](https://github.com/user-attachments/assets/8d2741e7-b281-43e9-b336-732c38b3295a)
+![Screenshot 2024-08-21 132817](https://github.com/user-attachments/assets/bcd47cf2-777a-4877-810d-3a2bfeef63cb)
 
 Users can manage bookings, view details, and cancel reservations.(CRUD)
 ![Screenshot 2024-08-16 164644](https://github.com/user-attachments/assets/68c87f8b-4785-4724-b33b-f86b61428a58)
