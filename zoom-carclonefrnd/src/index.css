@@ -118,17 +118,26 @@ button{
   color: white;
   opacity: 0.5;
 }
-.login-logo{
+/* .login-logo{
   position: absolute;
-  left:0;
+  left:320px;
   right:0;
-  top: 60%;
+  top: 55%;
   bottom: 50%;
   transform: translateY(-50% , -50%);
   font-size:45px;
   opacity: 0.2 !important;
   
 
+} */
+.login-logo {
+  position: absolute;
+  left: 50%; 
+  top: 55%; 
+  transform: translate(-50%, -50%); 
+  font-size: clamp(2rem, 5vw, 4rem); 
+  opacity: 0.2 !important; 
+  text-align: center;
 }
 .login a{
   color: white !important;
@@ -146,7 +155,7 @@ svg{
   width : 20px !important;
 }
 a{
-  color: orangered !important;
+  color: white ;
 }
 .header {
   display: flex;
@@ -172,4 +181,54 @@ a{
 /* Ensure the picker input is 100% width */
 .ant-picker {
   width: 100%;
+}
+@media (max-width: 991px) {
+  .login .ant-row {
+    flex-direction: column-reverse;
+  }
+
+  .login .ant-col-16,
+  .login .ant-col-6 {
+    max-width: 100%;
+    flex: 0 0 auto;
+  }
+
+  .login .ant-col-16 img {
+    height: 300px;
+    object-fit: cover;
+  }
+
+  .login .login-form {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .login .ant-col-16 img {
+    height: 200px;
+  }
+
+  .login .login-form {
+    padding: 1.5rem;
+  }
+}
+/* In your index.css or relevant CSS file */
+
+.login img {
+  width: 100%; /* Make the image take the full width of its container */
+  height: auto; /* Maintain aspect ratio */
+  max-height: 400px; /* Optional: Set a maximum height */
+  object-fit: cover; /* Ensure the image covers the container without distortion */
+}
+
+@media (max-width: 991px) {
+  .login img {
+    max-height: 300px; /* Adjust maximum height for medium-sized screens */
+  }
+}
+
+@media (max-width: 767px) {
+  .login img {
+    max-height: 200px; /* Further adjust maximum height for small screens */
+  }
 }

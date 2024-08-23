@@ -6,13 +6,14 @@ import { userLogin } from '../features/registerSlice';
 import AOS from 'aos';
 import Spinner from '../components/Spinner';
 import 'aos/dist/aos.css';
-
+import '../index.css';
 AOS.init();
 
 function Login() {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.alerts);
   const navigate = useNavigate();
+
   const onFinish = async (values) => {
     try {
       const resultAction = await dispatch(userLogin(values));
@@ -32,7 +33,6 @@ function Login() {
       console.error('Login error:', error);
     }
   };
-  
 
   return (
     <div className='login'>
@@ -48,14 +48,28 @@ function Login() {
           />
           <h1 className='login-logo'>Zoom car</h1>
         </Col>
-        <Col lg={8} className='text-left p-5'>
+        <Col lg={6} className='text-left p-5'>
           <Form layout='vertical' className='login-form p-5' onFinish={onFinish}>
             <h1>Login</h1>
             <hr />
-            <Form.Item name='username' label='Username' rules={[{ required: true }]}>
+            <Form.Item
+              name='username'
+              label='Username'
+              rules={[
+                { required: true, message: 'Please input your username!' },
+                { min: 4, message: 'Username must be at least 4 characters long!' }
+              ]}
+            >
               <Input />
             </Form.Item>
-            <Form.Item name='password' label='Password' rules={[{ required: true }]}>
+            <Form.Item
+              name='password'
+              label='Password'
+              rules={[
+                { required: true, message: 'Please input your password!' },
+                { min: 6, message: 'Password must be at least 6 characters long!' }
+              ]}
+            >
               <Input type='password' />
             </Form.Item>
 
@@ -72,146 +86,3 @@ function Login() {
 }
 
 export default Login;
-
-
-
-// import React from 'react';
-// import { Row, Col, Form, Input } from 'antd';
-// import { Link, useNavigate } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
-// // import { userLogin } from '../features/registerSlice';
-// import AOS from 'aos';
-// import Spinner from '../components/Spinner';
-// import 'aos/dist/aos.css'; // You can also use <link> for styles
-// import axios from 'axios';
-
-// AOS.init();
-
-// function Login() {
-//   const dispatch = useDispatch();
-//   const { loading } = useSelector((state) => state.alerts);
-//   const navigate = useNavigate();
-
-//   const onFinish = async (values) => {
-//     try {
-//       const response = await axios.post('http://localhost:3001/api/users/admin/login', values);
-//       const { token, user } = response.data;
-
-//       // Save token to localStorage
-//       localStorage.setItem('token', token);
-
-//       // Dispatch the user to your redux store
-//       dispatch({ type: 'LOGIN_SUCCESS', payload: user });
-
-//       // Check the user's role and redirect accordingly
-//       if (user.role === 'admin') {
-//         navigate('/admin');
-//       } else {
-//         navigate('/login'); // Redirect to user home or any other page for regular users
-//       }
-//     } catch (error) {
-//       console.error('Login error:', error.response.data);
-//       // Handle error, show feedback to the user
-//     }
-//   };
-
-//   return (
-//     <div className='login'>
-//       {loading && <Spinner />}
-//       <Row gutter={16} className='d-flex align-items-center'>
-//         <Col lg={16} style={{ position: 'relative' }}>
-//           <img
-//             className='w-100'
-//             data-aos='slide-right'
-//             data-aos-duration='1500'
-//             src='https://images.unsplash.com/photo-1485291571150-772bcfc10da5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80'
-//             alt='Zoom car'
-//           />
-//           <h1 className='login-logo'>Zoom car</h1>
-//         </Col>
-//         <Col lg={8} className='text-left p-5'>
-//           <Form layout='vertical' className='login-form p-5' onFinish={onFinish}>
-//             <h1>Login</h1>
-//             <hr />
-//             <Form.Item name='username' label='Username' rules={[{ required: true }]}>
-//               <Input />
-//             </Form.Item>
-//             <Form.Item name='password' label='Password' rules={[{ required: true }]}>
-//               <Input type='password' />
-//             </Form.Item>
-
-//             <button className='btn1 mt-2' type='submit'>Login</button>
-
-//             <hr />
-
-//             <Link to='/register'>Click Here to Register</Link>
-//           </Form>
-//         </Col>
-//       </Row>
-//     </div>
-//   );
-// }
-
-// export default Login;
-
-
-
-
-// import React from 'react';
-// import { Row, Col, Form, Input } from 'antd';
-// import { Link } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { userLogin } from '../features/registerSlice';
-// import AOS from 'aos';
-// import Spinner from '../components/Spinner';
-// import 'aos/dist/aos.css'; // You can also use <link> for styles
-
-// AOS.init();
-
-// function Login() {
-//   const dispatch = useDispatch();
-//   const { loading } = useSelector((state) => state.alerts);
-
-//   function onFinish(values) {
-//     dispatch(userLogin(values));
-//     console.log(values);
-//   }
-
-//   return (
-//     <div className='login'>
-//       {loading && <Spinner />}
-//       <Row gutter={16} className='d-flex align-items-center'>
-//         <Col lg={16} style={{ position: 'relative' }}>
-//           <img
-//             className='w-100'
-//             data-aos='slide-right'
-//             data-aos-duration='1500'
-//             src='https://images.unsplash.com/photo-1485291571150-772bcfc10da5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80'
-//             alt='Zoom car'
-//           />
-//           <h1 className='login-logo'>Zoom car</h1>
-//         </Col>
-//         <Col lg={8} className='text-left p-5'>
-//           <Form layout='vertical' className='login-form p-5' onFinish={onFinish}>
-//             <h1>Login</h1>
-//             <hr />
-//             <Form.Item name='username' label='Username' rules={[{ required: true }]}>
-//               <Input />
-//             </Form.Item>
-//             <Form.Item name='password' label='Password' rules={[{ required: true }]}>
-//               <Input type='password' />
-//             </Form.Item>
-
-//             <button className='btn1 mt-2' type='submit'>Login</button>
-
-//             <hr />
-
-//             <Link to='/register'>Click Here to Register</Link>
-//           </Form>
-//         </Col>
-//       </Row>
-//     </div>
-//   );
-// }
-
-// export default Login;

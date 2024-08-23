@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllBookings, updateBooking, deleteBooking } from '../features/bookingSlice';
 import DefaultLayout from '../components/Defaultlayout';
-import { Col, Row, Button, Modal, Form, DatePicker, InputNumber, Switch } from 'antd';
+import { Col, Row, Button, Modal, Form, DatePicker, InputNumber, Switch, Card, Typography } from 'antd';
 import Spinner from '../components/Spinner';
 import moment from 'moment';
+
+const { Title, Text } = Typography;
 
 function UserBookings() {
   const dispatch = useDispatch();
@@ -40,7 +42,7 @@ function UserBookings() {
       ...selectedBooking,
       totalHours: values.totalHours,
       bookedTimeSlots: {
-        from: values.from.format("MMM DD YYYY HH:mm "),
+        from: values.from.format("MMM DD YYYY HH:mm"),
         to: values.to.format("MMM DD YYYY HH:mm"),
       },
       totalAmount: totalAmount,
@@ -57,39 +59,39 @@ function UserBookings() {
   return (
     <DefaultLayout>
       {loading && <Spinner />}
-      <h3 className="text-center mt-2">My Bookings</h3>
+      <Title level={3} className="text-center mt-2">My Bookings</Title>
       <Row justify="center" gutter={16}>
         <Col lg={16} sm={24}>
           {bookings.filter((o) => o.user === user._id).map((booking) => (
-            <Row gutter={16} className="bs1 mt-3 text-left" key={booking._id}>
-              <Col lg={6} sm={24}>
-                <p><b>{booking.car?.Carname || "N/A"}</b></p>
-                <p>Total hours: <b>{booking.totalHours}</b></p>
-                <p>Rent per hour: <b>{booking.car?.RentPerHour || "N/A"}</b></p>
-                <p>Total amount: <b>{booking.totalAmount}</b></p>
-              </Col>
-              <Col lg={12} sm={24}>
-                <p>Transaction Id: <b>{booking.transactionId}</b></p>
-                {/* <p>From: <b>{booking.bookedTimeSlots.from}</b></p>
-                <p>To: <b>{booking.bookedTimeSlots.to}</b></p> */}
-                <p>Date of booking: <b>{moment(booking.createdAt).format('MMM DD YYYY HH:mm')}</b></p>
-                <p>Driver Required: <b>{booking.driverRequired ? "Yes" : "No"}</b></p>
-              </Col>
-              <Col lg={6} sm={24} className="text-right">
-                {booking.car?.Imageurl && (
-                  <img 
-                    style={{ borderRadius: 5 }} 
-                    src={booking.car.Imageurl} 
-                    height="100"
-                    width="80" 
-                    className="p-2" 
-                    alt={booking.car.Carname} 
-                  />
-                )}
-                <Button type="primary" className="m-2" onClick={() => showUpdateModal(booking)}>Update</Button>
-                <Button danger className="m-2" onClick={() => handleDelete(booking._id)}>Delete</Button>
-              </Col>
-            </Row>
+            <Card key={booking._id} style={{ marginBottom: '16px' }} hoverable>
+              <Row gutter={16}>
+                <Col lg={8} sm={24}>
+                  <Text strong>{booking.car?.Carname || "N/A"}</Text>
+                  <p>Total hours: <strong>{booking.totalHours}</strong></p>
+                  <p>Rent per hour: <strong>{booking.car?.RentPerHour || "N/A"}</strong></p>
+                  <p>Total amount: <strong>{booking.totalAmount}</strong></p>
+                </Col>
+                <Col lg={8} sm={24}>
+                  <p>Transaction Id: <strong>{booking.transactionId}</strong></p>
+                  <p>Date of booking: <strong>{moment(booking.createdAt).format('MMM DD YYYY HH:mm')}</strong></p>
+                  <p>Driver Required: <strong>{booking.driverRequired ? "Yes" : "No"}</strong></p>
+                </Col>
+                <Col lg={8} sm={24} className="text-right">
+                  {booking.car?.Imageurl && (
+                    <img 
+                      style={{ borderRadius: 5 }} 
+                      src={booking.car.Imageurl} 
+                      height="100"
+                      width="100" 
+                      className="p-2" 
+                      alt={booking.car.Carname} 
+                    />
+                  )}
+                  <Button type="primary" className="m-2" onClick={() => showUpdateModal(booking)}>Update</Button>
+                  <Button danger className="m-2" onClick={() => handleDelete(booking._id)}>Delete</Button>
+                </Col>
+              </Row>
+            </Card>
           ))}
         </Col>
       </Row>
@@ -101,13 +103,10 @@ function UserBookings() {
         footer={null}
       >
         <Form form={form} layout="vertical" onFinish={handleUpdate}>
-          {/* <Form.Item name="totalHours" label="Total Hours">
-            <InputNumber min={1} />
-          </Form.Item> */}
-          <Form.Item name="from" label="From">
+          <Form.Item name="from" label="From" rules={[{ required: true, message: 'Please select a start time!' }]}>
             <DatePicker showTime format="MMM DD YYYY HH:mm" />
           </Form.Item>
-          <Form.Item name="to" label="To">
+          <Form.Item name="to" label="To" rules={[{ required: true, message: 'Please select an end time!' }]}>
             <DatePicker showTime format="MMM DD YYYY HH:mm" />
           </Form.Item>
           <Form.Item name="rentPerHour" label="Rent Per Hour">

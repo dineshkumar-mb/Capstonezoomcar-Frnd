@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import DefaultLayout from '../components/Defaultlayout';
 import { getAllCars } from '../features/carsSlice';
-import { Col, Row, Modal, Button, Card } from 'antd';
+import { Col, Row, Modal, Button, Card, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import PriceRangeSlider from '../components/PriceRangeSlider';
@@ -10,6 +10,8 @@ import moment from 'moment';
 import axios from 'axios';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '../index.css';
+
+const { Title, Text } = Typography;
 
 const styles = {
   starWrap: {
@@ -29,6 +31,10 @@ const styles = {
     overflow: 'hidden',
     transition: '0.3s',
     height: '100%',
+    '&:hover': {
+      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
+      transform: 'translateY(-2px)',
+    },
   },
   carImage: {
     width: '100%',
@@ -49,22 +55,6 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     padding: '10px',
-  },
-  bookButton: {
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    padding: '10px',
-    cursor: 'pointer',
-  },
-  rateButton: {
-    backgroundColor: '#007bff',
-    color: 'orangered',
-    border: 'none',
-    borderRadius: '5px',
-    padding: '10px',
-    cursor: 'pointer',
   },
 };
 
@@ -140,8 +130,8 @@ function Home() {
 
   return (
     <DefaultLayout>
-      {user && <h2>Welcome, {user.username}!</h2>}
-      <p>Today's Date: {moment().format('MMMM Do YYYY')}</p>
+      {user && <Title level={3}>Welcome, {user.username}!</Title>}
+      <Text>Today's Date: {moment().format('MMMM Do YYYY')}</Text>
 
       <PriceRangeSlider data={cars || []} onFilter={(filteredCars) => setTotalCars(filteredCars)} />
 
@@ -150,24 +140,23 @@ function Home() {
       <Row justify="center" gutter={[16, 16]}>
         {Array.isArray(totalCars) &&
           totalCars.map((car) => (
-            <Col lg={5} sm={12} xs={24} key={car._id}>
-              <Card style={styles.card}>
+            <Col xs={24} sm={12} md={8} lg={6} key={car._id}>
+              <Card style={styles.card} hoverable>
                 <img src={car.Imageurl} style={styles.carImage} alt={car.Carname} />
                 <div style={{ padding: '10px' }}>
-                  <h3 style={styles.carTitle}>{car.Carname}</h3>
-                  {/* <p style={styles.carDescription}>Added on: {moment(car.createdAt).format('MMMM Do YYYY')}</p> */}
-                  <p style={styles.carDescription}>Rent Per Hour: {car.RentPerHour} /-</p>
-                  <p style={styles.carDescription}>
+                  <Title level={4} style={styles.carTitle}>{car.Carname}</Title>
+                  <Text style={styles.carDescription}>Rent Per Hour: {car.RentPerHour} /-</Text>
+                  <Text style={styles.carDescription}>
                     {car.description || 'Cars with full sophistication and well-maintained. For mindfulness and satisfaction.'}
-                  </p>
+                  </Text>
                 </div>
                 <div style={styles.btnContainer}>
-                  <Button style={styles.bookButton}>
+                  <Button type="primary">
                     <Link to={`/booking/${car._id}`} style={{ color: 'white' }}>
                       Book Now
                     </Link>
                   </Button>
-                  <Button style={styles.rateButton} onClick={() => showModal(car._id)}>
+                  <Button type="primary" onClick={() => showModal(car._id)}>
                     Rate & Review
                   </Button>
                 </div>
@@ -177,7 +166,7 @@ function Home() {
       </Row>
       <Modal
         title="Rate and Review"
-        open={isModalVisible} // Updated from "visible"
+        open={isModalVisible}
         onOk={() => handleReviewSubmit(selectedCar)}
         onCancel={handleCancel}
         footer={[
@@ -208,7 +197,7 @@ function Home() {
               value={reviewText}
               onChange={(e) => setReviewText(e.target.value)}
               placeholder="Write your review here..."
-              style={{ width: '100%', height: '80px', marginTop: '10px' }}
+              style={{ width: '100%', height: '80px', marginTop: '10px', borderRadius: '5px', border: '1px solid #ccc', padding: '5px' }}
             />
           </div>
         )}
@@ -218,7 +207,6 @@ function Home() {
 }
 
 export default Home;
-
 
 // import React, { useState, useEffect } from 'react';
 // import { useSelector, useDispatch } from 'react-redux';
