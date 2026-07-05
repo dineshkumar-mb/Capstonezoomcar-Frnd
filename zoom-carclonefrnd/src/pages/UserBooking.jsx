@@ -28,8 +28,8 @@ function UserBookings() {
     setSelectedBooking(booking);
     form.setFieldsValue({
       totalHours: booking.totalHours,
-      from: moment(booking.bookedTimeSlots.from),
-      to: moment(booking.bookedTimeSlots.to),
+      from: moment(booking.bookedTimeSlots.from, "MMM DD YYYY HH:mm"),
+      to: moment(booking.bookedTimeSlots.to, "MMM DD YYYY HH:mm"),
       rentPerHour: booking.car?.RentPerHour || 0,
       driverRequired: booking.driverRequired,
     });
@@ -37,7 +37,11 @@ function UserBookings() {
   };
 
   const handleUpdate = (values) => {
-    const totalAmount = values.totalHours * selectedBooking.car.RentPerHour;
+    const rentPerHour = selectedBooking.car?.RentPerHour || 0;
+    let totalAmount = values.totalHours * rentPerHour;
+    if (values.driverRequired) {
+      totalAmount += 30 * values.totalHours;
+    }
     const updatedBooking = {
       ...selectedBooking,
       totalHours: values.totalHours,
@@ -62,7 +66,11 @@ function UserBookings() {
       <Title level={3} className="text-center mt-2">My Bookings</Title>
       <Row justify="center" gutter={16}>
         <Col lg={16} sm={24}>
-          {bookings.filter((o) => o.user === user._id).map((booking) => (
+          {bookings.filter((o) => {
+            // Handle both plain ID string and populated user object from the backend
+            const bookingUserId = o.user?._id || o.user;
+            return bookingUserId === user._id;
+          }).map((booking) => (
             <Card key={booking._id} style={{ marginBottom: '16px' }} hoverable>
               <Row gutter={16}>
                 <Col lg={8} sm={24}>
@@ -103,14 +111,17 @@ function UserBookings() {
         footer={null}
       >
         <Form form={form} layout="vertical" onFinish={handleUpdate}>
+          <Form.Item name="totalHours" label="Total Hours" rules={[{ required: true, message: 'Please enter total hours!' }]}>
+            <InputNumber min={1} style={{ width: '100%' }} />
+          </Form.Item>
           <Form.Item name="from" label="From" rules={[{ required: true, message: 'Please select a start time!' }]}>
-            <DatePicker showTime format="MMM DD YYYY HH:mm" />
+            <DatePicker showTime format="MMM DD YYYY HH:mm" style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item name="to" label="To" rules={[{ required: true, message: 'Please select an end time!' }]}>
-            <DatePicker showTime format="MMM DD YYYY HH:mm" />
+            <DatePicker showTime format="MMM DD YYYY HH:mm" style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item name="rentPerHour" label="Rent Per Hour">
-            <InputNumber min={1} disabled />
+            <InputNumber min={1} disabled style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item name="driverRequired" label="Driver Required" valuePropName="checked">
             <Switch />
