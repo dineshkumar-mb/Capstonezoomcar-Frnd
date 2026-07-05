@@ -49,11 +49,16 @@ export const getAllUserBookings = createAsyncThunk('bookings/getAllUserBookings'
   try {
     const user = JSON.parse(localStorage.getItem('user'));
     const userId = user?._id;
+    if (!userId) {
+      console.warn('getAllUserBookings: no userId found in localStorage, skipping fetch.');
+      return [];
+    }
     const response = await axios.get(`https://capstonezoomcar-bknd.onrender.com/api/bookings/userbookings?userId=${userId}`);
     return response.data;
   } catch (error) {
     console.error(error);
     message.error('Something went wrong, please try later');
+    return [];
   } finally {
     dispatch(setLoading(false));
   }

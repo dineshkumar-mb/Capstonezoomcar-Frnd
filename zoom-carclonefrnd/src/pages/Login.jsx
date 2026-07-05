@@ -60,7 +60,7 @@ function Login() {
                 { min: 4, message: 'Username must be at least 4 characters long!' }
               ]}
             >
-              <Input />
+              <Input autoComplete="username" />
             </Form.Item>
             <Form.Item
               name='password'
@@ -70,7 +70,7 @@ function Login() {
                 { min: 6, message: 'Password must be at least 6 characters long!' }
               ]}
             >
-              <Input type='password' />
+              <Input.Password autoComplete="current-password" />
             </Form.Item>
 
             <button className='btn1 mt-2' type='submit'>Login</button>
