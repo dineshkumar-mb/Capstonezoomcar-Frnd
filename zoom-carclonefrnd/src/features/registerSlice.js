@@ -30,14 +30,15 @@ export const userLogin = createAsyncThunk(
       // Send POST request to the login API
       const response = await axios.post('https://capstonezoomcar-bknd.onrender.com/api/users/login', reqObj);
       
-      // Store user data in local storage
+      // Store user data and token in local storage
       localStorage.setItem('user', JSON.stringify(response.data.user));
+      localStorage.setItem('token', response.data.token);
 
       // Show success message
       message.success('Login success!');
 
       // Return the user data (which includes the role)
-      return response.data; // Assuming this contains { token, user: { username, role } }
+      return response.data; // Assuming this contains { token, user: { _id, username, role } }
     } catch (error) {
       // Show error message
       message.error('Something went wrong');

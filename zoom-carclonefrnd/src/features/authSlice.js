@@ -1,8 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { userLogin } from './registerSlice';
 
+// Rehydrate user from localStorage so Redux survives page refresh
+const userFromStorage = (() => {
+  try {
+    const stored = localStorage.getItem('user');
+    return stored ? JSON.parse(stored) : null;
+  } catch {
+    return null;
+  }
+})();
+
 const initialState = {
-  user: null,
+  user: userFromStorage,
   loading: false,
   error: null,
 };
@@ -14,6 +24,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       localStorage.removeItem('user');
+      localStorage.removeItem('token');
     },
   },
   extraReducers: (builder) => {
