@@ -117,7 +117,6 @@ function BookingCar() {
               <Checkbox onChange={(e) => setDriver(e.target.checked)}>Driver Required</Checkbox>
               <h3>Total Amount : {totalAmount}</h3>
               <StripeCheckout
-                shippingAddress
                 token={onToken}
                 currency="INR"
                 amount={totalAmount * 100}
