@@ -47,7 +47,9 @@ export const deleteBooking = createAsyncThunk('bookings/deleteBooking', async (i
 export const getAllUserBookings = createAsyncThunk('bookings/getAllUserBookings', async (_, { dispatch }) => {
   dispatch(setLoading(true));
   try {
-    const response = await axios.get('https://capstonezoomcar-bknd.onrender.com/api/bookings/userbookings');
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user?._id;
+    const response = await axios.get(`https://capstonezoomcar-bknd.onrender.com/api/bookings/userbookings?userId=${userId}`);
     return response.data;
   } catch (error) {
     console.error(error);
