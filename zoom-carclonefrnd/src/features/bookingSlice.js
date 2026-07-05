@@ -104,6 +104,17 @@ const bookingsSlice = createSlice({
       })
       .addCase(deleteBooking.fulfilled, (state, action) => {
         state.bookings = state.bookings.filter((booking) => booking._id !== action.payload);
+      })
+      .addCase(getAllUserBookings.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllUserBookings.fulfilled, (state, action) => {
+        state.loading = false;
+        state.bookings = action.payload || [];
+      })
+      .addCase(getAllUserBookings.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });

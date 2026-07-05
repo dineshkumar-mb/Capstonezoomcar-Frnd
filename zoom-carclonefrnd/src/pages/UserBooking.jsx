@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllBookings, updateBooking, deleteBooking } from '../features/bookingSlice';
+import { getAllUserBookings, updateBooking, deleteBooking } from '../features/bookingSlice';
 import DefaultLayout from '../components/Defaultlayout';
 import { Col, Row, Button, Modal, Form, DatePicker, InputNumber, Switch, Card, Typography } from 'antd';
 import Spinner from '../components/Spinner';
@@ -17,7 +17,7 @@ function UserBookings() {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    dispatch(getAllBookings());
+    dispatch(getAllUserBookings());
   }, [dispatch]);
 
   if (!Array.isArray(bookings)) {
@@ -66,11 +66,7 @@ function UserBookings() {
       <Title level={3} className="text-center mt-2">My Bookings</Title>
       <Row justify="center" gutter={16}>
         <Col lg={16} sm={24}>
-          {bookings.filter((o) => {
-            // Handle both plain ID string and populated user object from the backend
-            const bookingUserId = o.user?._id || o.user;
-            return bookingUserId === user._id;
-          }).map((booking) => (
+          {bookings.map((booking) => (
             <Card key={booking._id} style={{ marginBottom: '16px' }} hoverable>
               <Row gutter={16}>
                 <Col lg={8} sm={24}>
